@@ -15,10 +15,10 @@
     
 
     return (
-      <li>
+      <>
         <h3>{name}</h3>
         <span>{formattedTime}</span>
-      </li>
+      </>
     );
   }
 

@@ -4,7 +4,7 @@ import Clock from "./Clock";
 
 function Clocks() {
   const [timeZoneList, setTimeZoneList] = useState([]);
-  const [clockInterval, setClockInterval] = useState(null)
+  const [clockInterval, setClockInterval] = useState(null);
   const [myTimeZone, setMyTimeZone] = useState(null);
   const selectRef = useRef(null);
 
@@ -35,7 +35,7 @@ function Clocks() {
               const userTimeZone = {
                 name: data.localityInfo.administrative[0].name,
                 timeZone: data.localityInfo.informative[1].name,
-              }
+              };
               setMyTimeZone(userTimeZone);
             });
         },
@@ -46,20 +46,25 @@ function Clocks() {
 
   useEffect(() => {
     const clockInterval = setInterval(() => {
-      setClockInterval(new Date().getTime())
-    },1000)
+      setClockInterval(new Date().getTime());
+    }, 1000);
 
-    
-    return () => clearInterval(clockInterval)
-    
-  }, [timeZoneList])
-  
+    return () => clearInterval(clockInterval);
+  }, [timeZoneList]);
 
   return (
     <>
       <h1>내 시계</h1>
-      <ul>{myTimeZone !== null && <Clock name={myTimeZone.name} timeZone={myTimeZone.timeZone} clockInterval={clockInterval} />}</ul>
-      
+      <ul>
+        {myTimeZone !== null && (
+          <Clock
+            name={myTimeZone.name}
+            timeZone={myTimeZone.timeZone}
+            clockInterval={clockInterval}
+          />
+        )}
+      </ul>
+
       <div>
         <label htmlFor="timeZoneSelect">시계 추가하기</label>
         <select name="timeZoneSelect" ref={selectRef} defaultValue="">
@@ -75,9 +80,17 @@ function Clocks() {
 
       <ul>
         {timeZoneList?.map((timeZoneObj) => (
-          <Clock key={timeZoneObj.id} name={timeZoneObj.name} timeZone={timeZoneObj.timeZone} clockInterval={clockInterval} >
-            <button onClick={() => handleRemoveClock(timeZoneObj.id)}>삭제</button>
-          </Clock>
+          <li>
+            <Clock
+              key={timeZoneObj.id}
+              name={timeZoneObj.name}
+              timeZone={timeZoneObj.timeZone}
+              clockInterval={clockInterval}
+            />
+            <button onClick={() => handleRemoveClock(timeZoneObj.id)}>
+              삭제
+            </button>
+          </li>
         ))}
       </ul>
     </>
