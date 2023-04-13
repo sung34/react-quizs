@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { format } from 'date-fns-tz'
+  import React, { useEffect, useState } from "react";
+  import { format, utcToZonedTime } from 'date-fns-tz'
 
-function Clock({ timeZone }) {
-  const [formattedTime, setFormattedTime] = useState("");
+  function Clock({ name, timeZone, clockInterval }) {
+    const [formattedTime, setFormattedTime] = useState("");
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      setFormattedTime( format(now, "HH:mm:ss", { timeZone }) );
-    }, 1000);
+    useEffect(() => {
+      if (timeZone) {
+        const date = new Date();
+        const zonedDate = utcToZonedTime(date, timeZone)
+        const pattern = 'yyyy.M.d HH:mm:ss \'GMT\' XXX (z)'
+        setFormattedTime(format(zonedDate, pattern, timeZone));
+      }
+    }, [clockInterval]);
+    
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+    return (
+      <li>
+        <h3>{name}</h3>
+        <span>{formattedTime}</span>
+      </li>
+    );
+  }
 
-  return (
-    <div>
-      <h3>{timeZone}</h3>
-      <span>{formattedTime}</span>
-    </div>
-  );
-}
-
-export default Clock
+  export default Clock
 
